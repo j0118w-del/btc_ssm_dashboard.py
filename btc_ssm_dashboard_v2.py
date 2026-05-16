@@ -14,7 +14,7 @@ Usage:
 
 import streamlit as st
 import time
-import datetime
+from datetime import datetime
 import json
 import os
 import ccxt
@@ -165,7 +165,7 @@ def save_prediction(current_price, predicted_return, predicted_price, signal):
     """Save prediction for historical tracking and backtesting."""
     history = load_predictions_history()
     history.append({
-        'timestamp': datetime.datetime.now().isoformat(),
+        'timestamp': datetime.now().isoformat(),
         'current_price': float(current_price),
         'predicted_return': float(predicted_return),
         'predicted_price': float(predicted_price),
@@ -261,10 +261,10 @@ def should_refresh():
     Uses session state instead of time.sleep().
     """
     if "last_refresh" not in st.session_state:
-        st.session_state.last_refresh = datetime.datetime.now()
+        st.session_state.last_refresh = datetime.now()
         return True
     
-    time_since_refresh = (datetime.datetime.now() - st.session_state.last_refresh).total_seconds()
+    time_since_refresh = (datetime.now() - st.session_state.last_refresh).total_seconds()
     return time_since_refresh > REFRESH_INTERVAL
 
 # ===================== MAIN DASHBOARD =====================
@@ -303,7 +303,7 @@ def main():
     try:
         # FIX #1: Non-blocking refresh check
         if auto_enabled and should_refresh():
-            st.session_state.last_refresh = datetime.datetime.now()
+            st.session_state.last_refresh = datetime.now()
             st.rerun()
 
         # Fetch data
@@ -413,7 +413,7 @@ def main():
         with info_col3:
             st.metric("⏰ Cache TTL", f"{CACHE_TTL}s")
         with info_col4:
-            st.metric("📅 Last Update", datetime.datetime.now().strftime("%H:%M:%S"))
+            st.metric("📅 Last Update", datetime.now().strftime("%H:%M:%S"))
 
         st.caption(
             f"✨ **All 5 fixes applied**: "
